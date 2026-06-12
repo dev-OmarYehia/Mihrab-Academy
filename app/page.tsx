@@ -1,5 +1,6 @@
 "use client";
 
+import type { Variants } from "framer-motion";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -20,13 +21,11 @@ const submitContactForm = async (body: {
   return data;
 };
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  show: (i = 0) => ({
-    opacity: 1, y: 0,
-    transition: { duration: 0.8, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] },
-  }),
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
 };
+
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } };
 
 const blogPosts = [
@@ -45,10 +44,15 @@ export default function Home() {
   // Auth state — read directly from localStorage, no context needed
   const [user, setUser] = useState<{ parentName: string } | null>(null);
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem("mihrab_user");
-      if (saved) setUser(JSON.parse(saved));
-    } catch {}
+    let mounted = true;
+    const init = async () => {
+      try {
+        const saved = localStorage.getItem("mihrab_user");
+        if (saved && mounted) setUser(JSON.parse(saved));
+      } catch {}
+    };
+    init();
+    return () => { mounted = false; };
   }, []);
   const logout = () => {
     localStorage.removeItem("mihrab_token");
@@ -91,12 +95,12 @@ export default function Home() {
       {/* ── Navbar ── */}
       <motion.nav
         initial={{ y: -60, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
         className="flex items-center justify-between px-10 py-5 fixed top-0 left-0 right-0 z-50 bg-[#1a3a2f]/80 backdrop-blur-md border-b border-[#c9a96e]/10"
       >
         <span className="text-[#c9a96e] font-bold tracking-widest text-sm uppercase">Mihrab Academy</span>
         <div className="hidden md:flex gap-8 text-sm text-white/70">
-          {[["Home", "/"], ["Courses", "#"], ["About Us", "/about"], ["Blog", "#"]].map(([label, href], i) => (
+          {[["Home", "/"], ["Courses", "#programs"], ["About Us", "/about"], ["Blog", "#"]].map(([label, href], i) => (
             <motion.a key={label} href={href} initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 + i * 0.08 }} className="hover:text-[#c9a96e] transition-colors duration-200">
               {label}
@@ -130,12 +134,13 @@ export default function Home() {
         <div className="absolute top-40 left-1/2 w-80 h-80 rounded-full bg-[#2d6a4f]/15 blur-3xl pointer-events-none" />
         <motion.div style={{ y: heroY, opacity: heroOpacity }} className="flex flex-col md:flex-row items-center justify-between w-full max-w-7xl mx-auto gap-12">
           <motion.div variants={stagger} initial="hidden" animate="show" className="flex-1 max-w-xl">
-            <motion.p variants={fadeUp} custom={0} className="text-[#a8c5a0] uppercase tracking-widest text-xs mb-6">Mihrab Academy</motion.p>
-            <motion.h1 variants={fadeUp} custom={1} className="text-5xl md:text-6xl leading-tight font-light text-white">
+            <motion.p variants={fadeUp} className="text-[#a8c5a0] uppercase tracking-widest text-xs mb-6">Mihrab Academy</motion.p>
+            <motion.h1 variants={fadeUp} className="text-5xl md:text-6xl leading-tight font-light text-white">
               Learn Qur&apos;an<br />with<br /><span className="text-[#c9a96e] italic">Proper Guidance</span>
             </motion.h1>
-            <motion.div variants={fadeUp} custom={2} className="flex gap-4 mt-10">
-              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }} onClick={goToBooking}
+            <motion.div variants={fadeUp} className="flex gap-4 mt-10">
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
+                onClick={() => document.getElementById("programs")?.scrollIntoView({ behavior: "smooth" })}
                 className="flex items-center gap-2 bg-[#5a4a2f] text-[#c9a96e] border border-[#c9a96e]/20 px-6 py-3 rounded-full text-sm">
                 Explore Courses <span>→</span>
               </motion.button>
@@ -145,7 +150,7 @@ export default function Home() {
             </motion.div>
           </motion.div>
           <motion.div initial={{ opacity: 0, scale: 0.92, x: 40 }} animate={{ opacity: 1, scale: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }} className="flex-1 max-w-lg w-full">
+            transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }} className="flex-1 max-w-lg w-full">
             <div className="rounded-3xl overflow-hidden aspect-[4/3] ring-1 ring-[#a8c5a0]/20">
               <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?w=800&auto=format&fit=crop" alt="Student reading Quran" className="w-full h-full object-cover" />
             </div>
@@ -174,23 +179,49 @@ export default function Home() {
       </section>
 
       {/* ── Programs ── */}
-      <section className="bg-[#0f1a14] px-10 md:px-20 py-20">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
-          <p className="text-[#a8c5a0] uppercase tracking-widest text-xs mb-3">What We Offer</p>
-          <h2 className="text-5xl font-light text-white">Our Programs</h2>
+      <section id="programs" className="bg-[#0d1510] px-10 md:px-20 py-24">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+          <p className="text-[#c9a96e] uppercase tracking-widest text-xs mb-4">What We Offer</p>
+          <h2 className="text-5xl font-light text-white mb-4">Our Programs</h2>
+          <p className="text-white/40 text-sm max-w-xl mx-auto leading-relaxed">
+            Comprehensive Islamic education designed for all ages and levels — from the first letter of the Quran to advanced scholarship.
+          </p>
         </motion.div>
-        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid md:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }}
+          className="grid md:grid-cols-4 gap-4 max-w-7xl mx-auto">
           {[
-            { title: "Qur'an Program", desc: "Learn Qur'an with proper tajweed and recitation from certified teachers.", icon: "☽" },
-            { title: "Arabic Language", desc: "Master reading, writing and speaking Arabic at your own pace.", icon: "ع" },
-            { title: "Islamic Studies", desc: "Understand Islamic beliefs, history, and practice with depth.", icon: "✦" },
+            { num: "01", title: "Quran Program", sub: "READ, MEMORISE & UNDERSTAND THE HOLY QURAN", desc: "Here you will find the difference in learning the Holy Qur'an in terms of reading, memorising, and Tajweed...", modules: 3, href: "/programs/quran",
+              icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg> },
+            { num: "02", title: "Arabic Language", sub: "LEARN THE LANGUAGE OF THE QURAN YOUR WAY", desc: "The language of the Qur'an — and the most wonderful language of all time. Here you can learn according...", modules: 4, href: "/programs/arabic",
+              icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M5 8l6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg> },
+            { num: "03", title: "Islamic Studies", sub: "FAITH, JURISPRUDENCE & THE SCIENCES OF ISLAM", desc: "Learn the concept of Islamic education from all aspects and become familiar with everything...", modules: 4, href: "/programs/islamic-studies",
+              icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> },
+            { num: "04", title: "History Program", sub: "KNOW YOUR HERITAGE — BUILT ON FACTS", desc: "Herein lies the difference: we learn about historical events that are absent from our children — and...", modules: 3, href: "/programs/history",
+              icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> },
           ].map((p) => (
-            <motion.div key={p.title} variants={fadeUp} whileHover={{ y: -6 }} onClick={goToBooking}
-              className="bg-[#152a20] border border-[#a8c5a0]/10 hover:border-[#a8c5a0]/40 rounded-2xl p-8 transition-colors duration-300 group cursor-pointer">
-              <div className="text-[#c9a96e] text-3xl mb-5">{p.icon}</div>
-              <h3 className="text-white text-xl font-medium mb-3">{p.title}</h3>
-              <p className="text-[#a8c5a0]/60 text-sm leading-relaxed">{p.desc}</p>
-              <div className="mt-6 text-[#c9a96e] text-sm group-hover:translate-x-2 transition-transform duration-300">Book a free lesson →</div>
+            <motion.div key={p.title} variants={fadeUp}
+              whileHover={{ y: -4, borderColor: "rgba(201,169,110,0.25)" }}
+              onClick={() => router.push(p.href)}
+              className="bg-[#152a20]/40 border border-white/8 rounded-2xl p-6 transition-all duration-300 group cursor-pointer flex flex-col">
+              {/* Top row: icon + number */}
+              <div className="flex items-start justify-between mb-6">
+                <div className="w-9 h-9 rounded-lg bg-[#c9a96e]/10 flex items-center justify-center text-[#c9a96e]">
+                  {p.icon}
+                </div>
+                <span className="text-white/20 text-2xl font-light">{p.num}</span>
+              </div>
+              {/* Title + subtitle */}
+              <h3 className="text-white font-semibold text-lg mb-1">{p.title}</h3>
+              <p className="text-[#c9a96e] text-[10px] uppercase tracking-widest mb-4">{p.sub}</p>
+              {/* Description */}
+              <p className="text-white/40 text-sm leading-relaxed flex-1">{p.desc}</p>
+              {/* Footer */}
+              <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
+                <span className="text-white/30 text-xs">{p.modules} modules</span>
+                <span className="text-[#c9a96e] text-sm group-hover:translate-x-1 transition-transform duration-200">
+                  Explore →
+                </span>
+              </div>
             </motion.div>
           ))}
         </motion.div>

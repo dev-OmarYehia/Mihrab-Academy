@@ -1,17 +1,16 @@
 "use client";
 
+import type { Variants } from "framer-motion";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  show: (i = 0) => ({
-    opacity: 1, y: 0,
-    transition: { duration: 0.8, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] },
-  }),
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
 };
+
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } };
 
 // Animated counter hook
@@ -106,10 +105,15 @@ export default function AboutPage() {
   const router = useRouter();
   const [user, setUser] = useState<{ parentName: string } | null>(null);
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem("mihrab_user");
-      if (saved) setUser(JSON.parse(saved));
-    } catch {}
+    let mounted = true;
+    const init = async () => {
+      try {
+        const saved = localStorage.getItem("mihrab_user");
+        if (saved && mounted) setUser(JSON.parse(saved));
+      } catch {}
+    };
+    init();
+    return () => { mounted = false; };
   }, []);
   const logout = () => {
     localStorage.removeItem("mihrab_token");
@@ -124,7 +128,7 @@ export default function AboutPage() {
       {/* ── Navbar ── */}
       <motion.nav
         initial={{ y: -60, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
         className="flex items-center justify-between px-10 py-5 fixed top-0 left-0 right-0 z-50 bg-[#1a3a2f]/80 backdrop-blur-md border-b border-[#c9a96e]/10"
       >
         <Link href="/" className="text-[#c9a96e] font-bold tracking-widest text-sm uppercase">Mihrab Academy</Link>
