@@ -96,10 +96,10 @@ export default function Home() {
       >
         <span className="text-[#c9a96e] font-bold tracking-widest text-sm uppercase">Mihrab Academy</span>
         <div className="hidden md:flex gap-8 text-sm text-white/70">
-          {["Home", "Courses", "About Us", "Blog"].map((item, i) => (
-            <motion.a key={item} href="#" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 + i * 0.08 }} className="hover:text-[#a8c5a0] transition-colors duration-200">
-              {item}
+          {[["Home", "/"], ["Courses", "#"], ["About Us", "/about"], ["Blog", "#"]].map(([label, href], i) => (
+            <motion.a key={label} href={href} initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 + i * 0.08 }} className="hover:text-[#c9a96e] transition-colors duration-200">
+              {label}
             </motion.a>
           ))}
         </div>
@@ -334,7 +334,7 @@ export default function Home() {
           <div>
             <h4 className="text-[#a8c5a0]/40 uppercase tracking-widest text-xs mb-6">Quick Links</h4>
             <ul className="space-y-4">
-              {[["About Us", "#"], ["Our Programs", "#"], ["Book a Lesson", "/booking"], ["Blog", "#"]].map(([label, href]) => (
+              {[["About Us", "/about"], ["Our Programs", "#"], ["Book a Lesson", "/booking"], ["Blog", "#"]].map(([label, href]) => (
                 <li key={label}><Link href={href} className="text-[#a8c5a0]/70 text-sm hover:text-[#c9a96e] transition-colors">{label}</Link></li>
               ))}
             </ul>
