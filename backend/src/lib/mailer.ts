@@ -1,9 +1,7 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-
 dotenv.config();
 
-// Create Gmail transporter
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -12,93 +10,64 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// ── Send a generic email ──────────────────────────────────────
-export const sendEmail = async (
-  to: string,
-  subject: string,
-  html: string
-) => {
+export const sendEmail = async (to: string, subject: string, html: string) => {
   await transporter.sendMail({
     from: `"Mihrab Academy" <${process.env.GMAIL_USER}>`,
-    to,
-    subject,
-    html,
+    to, subject, html,
   });
 };
 
-// ── 24hr lesson reminder email ────────────────────────────────
-export const sendLessonReminder = async (
-  parentName: string,
-  parentEmail: string,
-  childName: string,
-  lessonTime: string,
-  meetingLink: string
-) => {
-  const html = `
-    <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; background: #1a1035; color: #ffffff; padding: 40px; border-radius: 16px;">
-      <h1 style="color: #d4af6a; font-size: 24px; margin-bottom: 8px;">Mihrab Academy</h1>
-      <hr style="border-color: #a78bca33; margin-bottom: 24px;" />
+const emailWrapper = (content: string) => `
+  <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;background:#1a3a2f;color:#fff;padding:40px;border-radius:16px;">
+    <h2 style="color:#c9a96e;margin-bottom:4px;">Mihrab Academy</h2>
+    <hr style="border-color:rgba(201,169,110,0.2);margin-bottom:24px;" />
+    ${content}
+    <p style="color:rgba(201,169,110,0.4);font-size:12px;margin-top:40px;">Jazakum Allah Khayran — Mihrab Academy</p>
+  </div>`;
 
-      <p style="color: #a78bca;">Assalamu Alaikum, <strong style="color: #fff;">${parentName}</strong></p>
-
-      <p style="color: #a78bca; line-height: 1.7;">
-        This is a friendly reminder that <strong style="color: #d4af6a;">${childName}</strong>'s
-        first lesson is scheduled for:
-      </p>
-
-      <div style="background: #160d2e; border: 1px solid #a78bca33; border-radius: 12px; padding: 20px; margin: 24px 0; text-align: center;">
-        <p style="color: #d4af6a; font-size: 20px; margin: 0; font-weight: bold;">${lessonTime}</p>
-      </div>
-
-      <a href="${meetingLink}"
-        style="display: inline-block; background: #2d1f4e; color: #d4af6a; padding: 12px 28px; border-radius: 50px; text-decoration: none; font-size: 14px; border: 1px solid #d4af6a44;">
-        Join Lesson →
-      </a>
-
-      <p style="color: #a78bca55; font-size: 12px; margin-top: 40px;">
-        Jazakum Allah Khayran for choosing Mihrab Academy.<br/>
-        If you have any questions, reply to this email or WhatsApp us at +20 15 53135708.
-      </p>
-    </div>
-  `;
-
-  await sendEmail(parentEmail, "⏰ Reminder: Your Child's Lesson is Tomorrow!", html);
+export const sendWelcomeEmail = async (email: string, parentName: string, childName: string) => {
+  await sendEmail(email, "Welcome to Mihrab Academy!", emailWrapper(`
+    <p style="color:rgba(255,255,255,0.8);">Assalamu Alaikum, <strong>${parentName}</strong></p>
+    <p style="color:rgba(255,255,255,0.7);line-height:1.7;">
+      Alhamdulillah! Your account has been created. You can now book lessons for
+      <strong style="color:#c9a96e;">${childName}</strong>.
+    </p>
+    <a href="${process.env.FRONTEND_URL}/booking"
+      style="display:inline-block;background:#5a4a2f;color:#c9a96e;padding:12px 28px;border-radius:50px;text-decoration:none;font-size:14px;margin-top:16px;">
+      Book Your First Lesson →
+    </a>`));
 };
 
-// ── Booking confirmation email ─────────────────────────────────
 export const sendBookingConfirmation = async (
-  parentName: string,
-  parentEmail: string,
-  childName: string,
-  lessonTime: string,
-  meetingLink: string
+  email: string, parentName: string, childName: string,
+  lessonTime: string, meetingLink: string
 ) => {
-  const html = `
-    <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; background: #1a1035; color: #ffffff; padding: 40px; border-radius: 16px;">
-      <h1 style="color: #d4af6a; font-size: 24px; margin-bottom: 8px;">Mihrab Academy</h1>
-      <hr style="border-color: #a78bca33; margin-bottom: 24px;" />
-
-      <p style="color: #a78bca;">Assalamu Alaikum, <strong style="color: #fff;">${parentName}</strong></p>
-
-      <p style="color: #a78bca; line-height: 1.7;">
-        Alhamdulillah! <strong style="color: #d4af6a;">${childName}</strong>'s lesson has been booked successfully.
-        We will send you a reminder 24 hours before the lesson.
-      </p>
-
-      <div style="background: #160d2e; border: 1px solid #a78bca33; border-radius: 12px; padding: 20px; margin: 24px 0; text-align: center;">
-        <p style="color: #d4af6a; font-size: 20px; margin: 0; font-weight: bold;">${lessonTime}</p>
-      </div>
-
-      <a href="${meetingLink}"
-        style="display: inline-block; background: #2d1f4e; color: #d4af6a; padding: 12px 28px; border-radius: 50px; text-decoration: none; font-size: 14px; border: 1px solid #d4af6a44;">
-        View Lesson Details →
-      </a>
-
-      <p style="color: #a78bca55; font-size: 12px; margin-top: 40px;">
-        Jazakum Allah Khayran for choosing Mihrab Academy.
-      </p>
+  await sendEmail(email, "✅ Lesson Booked — Mihrab Academy", emailWrapper(`
+    <p style="color:rgba(255,255,255,0.8);">Assalamu Alaikum, <strong>${parentName}</strong></p>
+    <p style="color:rgba(255,255,255,0.7);line-height:1.7;">
+      <strong style="color:#c9a96e;">${childName}</strong>'s lesson has been booked successfully!
+    </p>
+    <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(201,169,110,0.2);border-radius:12px;padding:20px;margin:20px 0;text-align:center;">
+      <p style="color:#c9a96e;font-size:18px;margin:0;font-weight:bold;">${lessonTime}</p>
     </div>
-  `;
+    <a href="${meetingLink}" style="display:inline-block;background:#5a4a2f;color:#c9a96e;padding:12px 28px;border-radius:50px;text-decoration:none;font-size:14px;">
+      Join Lesson →
+    </a>`));
+};
 
-  await sendEmail(parentEmail, "✅ Lesson Booked — Mihrab Academy", html);
+export const sendLessonReminder = async (
+  email: string, parentName: string, childName: string,
+  lessonTime: string, meetingLink: string
+) => {
+  await sendEmail(email, "⏰ Reminder: Lesson Tomorrow — Mihrab Academy", emailWrapper(`
+    <p style="color:rgba(255,255,255,0.8);">Assalamu Alaikum, <strong>${parentName}</strong></p>
+    <p style="color:rgba(255,255,255,0.7);line-height:1.7;">
+      This is a reminder that <strong style="color:#c9a96e;">${childName}</strong>'s lesson is tomorrow!
+    </p>
+    <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(201,169,110,0.2);border-radius:12px;padding:20px;margin:20px 0;text-align:center;">
+      <p style="color:#c9a96e;font-size:18px;margin:0;font-weight:bold;">${lessonTime}</p>
+    </div>
+    <a href="${meetingLink}" style="display:inline-block;background:#5a4a2f;color:#c9a96e;padding:12px 28px;border-radius:50px;text-decoration:none;font-size:14px;">
+      Join Lesson →
+    </a>`));
 };
