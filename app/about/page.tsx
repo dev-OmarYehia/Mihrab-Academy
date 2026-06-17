@@ -198,14 +198,10 @@ export default function AboutPage() {
             className="flex-1 max-w-lg w-full relative">
             <div className="rounded-2xl overflow-hidden aspect-[4/3]">
               <motion.img whileHover={{ scale: 1.04 }} transition={{ duration: 0.6 }}
-                src="https://images.unsplash.com/photo-1564769662533-4f00a87b4056?w=800&auto=format&fit=crop"
+                src="/vision.jpeg"
                 alt="Grand mosque at dusk" className="w-full h-full object-cover" />
             </div>
-            {/* Badge */}
-            <div className="absolute bottom-6 left-6 bg-[#1a3a2f]/95 backdrop-blur-sm border border-[#c9a96e]/20 rounded-xl px-5 py-3">
-              <p className="text-[#c9a96e] text-[10px] uppercase tracking-widest mb-1">Founded on</p>
-              <p className="text-white font-medium text-sm">Authentic Scholarship</p>
-            </div>
+
           </motion.div>
 
           {/* Text */}

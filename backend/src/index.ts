@@ -21,7 +21,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/booking", bookingRoutes);
 app.use("/api/contact", contactRoutes);
 
-// ── Health check ──────────────────────────────────────────────
+// ── Health check ─────────────────────────────────────────────p
 app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", message: "Mihrab Academy API running 🕌" });
 });

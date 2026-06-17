@@ -13,9 +13,24 @@ const fadeUp: Variants = {
 
 
 const modules = [
-  { num: "01", title: "The Prophets & Their Stories", desc: "Explore the stories of the Prophets as narrated in the Quran and authentic Sunnah — their trials, miracles, and timeless lessons that remain deeply relevant to our lives today." },
-  { num: "02", title: "The Life of the Prophet ﷺ", desc: "A detailed study of the Seerah — the biography of Prophet Muhammad ﷺ — from pre-Islamic Arabia through the founding of the Islamic state, covering key battles, treaties, and pivotal moments." },
-  { num: "03", title: "The Rightly-Guided Caliphs", desc: "Study the era of Abu Bakr, Umar, Uthman, and Ali (may Allah be pleased with them) — the golden age of Islamic governance, expansion, and scholarship that shaped the Muslim world." },
+  {
+    num: "01",
+    title: "Islamic History",
+    icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>,
+    desc: "Students explore the complete history of Islam from its very beginnings to the present day — including the early conquests, pivotal battles, great victories, periods of prosperity, and periods of weakness experienced by the Islamic state. A sweeping, honest account of a civilisation that shaped the world.",
+  },
+  {
+    num: "02",
+    title: "Arab History",
+    icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
+    desc: "Students learn about the Arabian Peninsula — its pre-Islamic history, its transformation under Islam, and the division and unification of its states across the centuries. A foundational module for understanding the roots of the Arab world and its enduring place in global history.",
+  },
+  {
+    num: "03",
+    title: "European History",
+    icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>,
+    desc: "Students learn about the history of European countries in a clear and comprehensive manner — from the medieval period and the Crusades through to the Renaissance, the Age of Empires, and the modern era. Understanding European history enriches students' ability to see the world and Islam's place within it.",
+  },
 ];
 
 export default function HistoryProgram() {
@@ -70,7 +85,7 @@ export default function HistoryProgram() {
             <div className="bg-[#152a20]/60 border border-white/8 rounded-2xl p-6">
               <h3 className="text-white font-medium mb-5">What&apos;s Included</h3>
               <ul className="space-y-3">
-                {["Stories of the Prophets","Seerah of the Prophet ﷺ","The Rightly-Guided Caliphs","Islamic Civilisation","Free trial lesson included"].map((item)=>(
+                {["Islamic History","Arab History","European History","1-on-1 sessions with scholars","Free trial lesson included"].map((item)=>(
                   <li key={item} className="flex items-center gap-3 text-white/60 text-sm">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" strokeWidth="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                     {item}
@@ -88,14 +103,18 @@ export default function HistoryProgram() {
           <h2 className="text-4xl font-light text-white mb-12">What You Will Learn</h2>
           <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid md:grid-cols-3 gap-5">
             {modules.map((m)=>(
-              <motion.div key={m.title} variants={fadeUp} className="bg-[#152a20]/40 border border-white/8 rounded-2xl p-7">
-                <div className="flex items-start justify-between mb-4">
-                  <span className="text-[#c9a96e] text-xs uppercase tracking-widest">Module</span>
-                  <span className="text-white/20 text-xl font-light">{m.num}</span>
+              <motion.div key={m.title} variants={fadeUp} className="bg-[#1a1a0f]/80 border border-white/6 rounded-2xl p-7 flex flex-col">
+                {/* Icon + Number row */}
+                <div className="flex items-start justify-between mb-3">
+                  <div className="text-[#c9a96e]/80">{m.icon}</div>
+                  <span className="text-white/20 text-2xl font-light">{m.num}</span>
                 </div>
-                <div className="w-8 h-px bg-[#c9a96e]/30 mb-4" />
-                <h3 className="text-white font-medium mb-3">{m.title}</h3>
-                <p className="text-white/40 text-sm leading-relaxed">{m.desc}</p>
+                {/* Gold divider */}
+                <div className="w-8 h-px bg-[#c9a96e]/40 mb-5" />
+                {/* Title */}
+                <h3 className="text-white font-medium text-lg mb-3">{m.title}</h3>
+                {/* Description */}
+                <p className="text-white/45 text-sm leading-relaxed flex-1">{m.desc}</p>
               </motion.div>
             ))}
           </motion.div>

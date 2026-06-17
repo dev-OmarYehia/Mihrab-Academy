@@ -151,8 +151,8 @@ export default function Home() {
           </motion.div>
           <motion.div initial={{ opacity: 0, scale: 0.92, x: 40 }} animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }} className="flex-1 max-w-lg w-full">
-            <div className="rounded-3xl overflow-hidden aspect-[4/3] ring-1 ring-[#a8c5a0]/20">
-              <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?w=800&auto=format&fit=crop" alt="Student reading Quran" className="w-full h-full object-cover" />
+            <div className="rounded-3xl overflow-hidden aspect-[1/1] ring-1 ring-[#a8c5a0]/20">
+              <img src="/interface.jpeg" />
             </div>
           </motion.div>
         </motion.div>
@@ -164,7 +164,7 @@ export default function Home() {
           <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.9 }} className="flex-1 max-w-lg w-full">
             <div className="rounded-2xl overflow-hidden aspect-[4/3] ring-1 ring-[#a8c5a0]/15">
               <motion.img whileHover={{ scale: 1.04 }} transition={{ duration: 0.6 }}
-                src="https://images.unsplash.com/photo-1564769662533-4f00a87b4056?w=800&auto=format&fit=crop" alt="Grand mosque" className="w-full h-full object-cover" />
+                src="vision.jpeg" className="w-full h-full object-cover" />
             </div>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.2 }} className="flex-1 max-w-xl">
