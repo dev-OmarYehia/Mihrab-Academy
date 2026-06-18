@@ -100,7 +100,7 @@ export default function Home() {
       >
         <span className="text-[#c9a96e] font-bold tracking-widest text-sm uppercase">Mihrab Academy</span>
         <div className="hidden md:flex gap-8 text-sm text-white/70">
-          {[["Home", "/"], ["Courses", "#programs"], ["About Us", "/about"], ["Blog", "#"]].map(([label, href], i) => (
+          {[["Home", "/"], ["Courses", "#programs"], ["About Us", "/about"], ["Blog", "/blog"]].map(([label, href], i) => (
             <motion.a key={label} href={href} initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 + i * 0.08 }} className="hover:text-[#c9a96e] transition-colors duration-200">
               {label}
@@ -117,7 +117,6 @@ export default function Home() {
             </>
           ) : (
             <>
-              <Link href="/login" className="text-[#a8c5a0]/70 text-sm hover:text-white transition-colors">Sign In</Link>
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }} onClick={goToBooking}
                 className="bg-[#5a4a2f] hover:bg-[#6b5a3a] text-[#c9a96e] text-sm px-5 py-2 rounded-full border border-[#c9a96e]/20 transition-colors">
                 Start Learning
@@ -144,7 +143,7 @@ export default function Home() {
                 className="flex items-center gap-2 bg-[#5a4a2f] text-[#c9a96e] border border-[#c9a96e]/20 px-6 py-3 rounded-full text-sm">
                 Explore Courses <span>→</span>
               </motion.button>
-              <motion.button whileHover={{ color: "#a8c5a0" }} onClick={goToBooking} className="text-white/70 text-sm px-6 py-3">
+              <motion.button whileHover={{ color: "#a8c5a0" }} onClick={() => window.open("https://wa.me/201553135708?text=Hi%2C%20I%27d%20like%20to%20book%20a%20free%20trial%20lesson!", "_blank")} className="text-white/70 text-sm px-6 py-3">
                 Start Learning
               </motion.button>
             </motion.div>
@@ -244,30 +243,6 @@ export default function Home() {
             <motion.div key={f.title} variants={fadeUp} whileHover={{ x: 4 }} className="border-t border-[#a8c5a0]/20 pt-6">
               <h3 className="text-[#c9a96e] text-lg font-medium mb-3">{f.title}</h3>
               <p className="text-[#a8c5a0]/60 text-sm leading-relaxed">{f.desc}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
-
-      {/* ── Blog ── */}
-      <section className="bg-[#0f1a14] px-10 md:px-20 py-24">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
-          <h2 className="text-5xl font-light text-white mb-4">Knowledge &amp; Inspiration</h2>
-          <p className="text-[#a8c5a0]/50 text-sm max-w-xl mx-auto">Deepen your understanding with our latest insights on Seerah, Hadith, and Islamic life.</p>
-        </motion.div>
-        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid md:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          {blogPosts.map((post) => (
-            <motion.div key={post.title} variants={fadeUp} whileHover={{ y: -8 }}
-              className="bg-[#152a20] rounded-2xl overflow-hidden border border-[#a8c5a0]/10 hover:border-[#a8c5a0]/30 transition-colors group cursor-pointer">
-              <div className="relative overflow-hidden aspect-[16/9]">
-                <motion.img whileHover={{ scale: 1.06 }} transition={{ duration: 0.5 }} src={post.img} alt={post.title} className="w-full h-full object-cover" />
-                <span className="absolute top-3 left-3 bg-[#5a4a2f] text-[#c9a96e] text-[10px] uppercase tracking-widest px-3 py-1 rounded-full border border-[#c9a96e]/20">{post.category}</span>
-              </div>
-              <div className="p-6">
-                <h3 className="text-white font-medium text-lg mb-2">{post.title}</h3>
-                <p className="text-[#a8c5a0]/50 text-sm leading-relaxed mb-5">{post.excerpt}</p>
-                <span className="text-[#c9a96e] text-sm group-hover:translate-x-1 inline-block transition-transform">Read More &rsaquo;</span>
-              </div>
             </motion.div>
           ))}
         </motion.div>
@@ -381,7 +356,6 @@ export default function Home() {
               ) : (
                 <>
                   <li><Link href="/signup" className="text-[#a8c5a0]/70 text-sm hover:text-[#c9a96e] transition-colors">Sign Up</Link></li>
-                  <li><Link href="/login" className="text-[#a8c5a0]/70 text-sm hover:text-[#c9a96e] transition-colors">Sign In</Link></li>
                 </>
               )}
             </ul>
