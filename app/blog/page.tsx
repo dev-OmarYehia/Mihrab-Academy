@@ -33,7 +33,7 @@ const posts = [
     category: "HADITH & SEERAH",
     title: "The Hijri Calendar: The Sacred Journey and Temporal Anchor of Islam",
     excerpt: "For over a billion Muslims, time is measured not just by cycles of the sun, but by a profound historical turning point that altered the course of human history.",
-    img: "/blog/hijri-calendar.jpg",
+    img: "/blog/hijri-calendar.jpeg",
     readTime: "7 min read",
   },
 ];

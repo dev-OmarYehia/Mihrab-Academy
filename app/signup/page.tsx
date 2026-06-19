@@ -13,7 +13,6 @@ export default function SignupPage() {
   const [form, setForm] = useState({
     parentName: "",
     email: "",
-    phone: "",
     childName: "",
     childAge: "",
     program: programs[0], // Default to the first program
@@ -28,7 +27,6 @@ export default function SignupPage() {
     const whatsappMessage = `Hi, I'd like to book a free trial lesson for the ${form.program}. Here are my details:
 - Parent Name: ${form.parentName}
 - Email: ${form.email}
-- Phone: ${form.phone}
 - Child's Name: ${form.childName}
 - Child's Age: ${form.childAge}`;
     const whatsappURL = `https://wa.me/201553135708?text=${encodeURIComponent(whatsappMessage)}`;
@@ -55,7 +53,6 @@ export default function SignupPage() {
           {[
             { label: "Your Name", name: "parentName", placeholder: "Mohamed", type: "text" },
             { label: "Email", name: "email", placeholder: "Mohamed@example.com", type: "email" },
-            { label: "Phone Number", name: "phone", placeholder: "+17759865200", type: "text" },
             { label: "Child's Name", name: "childName", placeholder: "Mohamed", type: "text" },
             { label: "Child's Age", name: "childAge", placeholder: "8", type: "number" },
           ].map((f) => (

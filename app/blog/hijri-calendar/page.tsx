@@ -19,7 +19,7 @@ export default function HijriCalendarArticle() {
       </nav>
 
       <section className="pt-20 relative h-[50vh] overflow-hidden">
-  <img src="/hijj.jpeg" alt="The Hijri Calendar" className="w-full h-full object-cover" />
+  <img src="/scc.png" alt="The Hijri Calendar" className="w-full h-full object-cover" />
   <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-white" />
   <div className="absolute bottom-8 left-10 md:left-20">
     <span className="bg-[#1a3a2f]/90 text-[#c9a96e] text-[10px] uppercase tracking-widest px-3 py-1 rounded-full border border-[#c9a96e]/20">Hadith &amp; Seerah</span>

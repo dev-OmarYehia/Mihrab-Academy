@@ -252,7 +252,7 @@ export default function Home() {
       <section className="bg-[#0d1510] px-10 md:px-20 py-24">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           className="max-w-5xl mx-auto flex flex-col md:flex-row rounded-3xl overflow-hidden border border-gray-200 shadow-sm">
-          {/* Left — white panel */}
+          {/* Left —  panel */}
           <div className="bg-[#1a3a2f] p-10 md:w-2/5 flex flex-col justify-between">
             <div>
               <h2 className="text-4xl font-light text-gray-900 mb-4">Get in Touch</h2>
@@ -344,8 +344,8 @@ export default function Home() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[#a8c5a0]/70 text-xs mb-2">Message <span className="text-red-400">*</span></label>
-                  <textarea name="message" rows={4} placeholder="How can we help you?" value={contact.message} onChange={handleContactChange}
+                  <label className="block text-[#a8c5a0]/70 text-xs mb-2">What time do you prefer <span className="text-red-400">*</span></label>
+                  <textarea name="message" rows={4} placeholder="Ex: From 9am To 3pm" value={contact.message} onChange={handleContactChange}
                     className="w-full bg-[#152a20] border border-[#a8c5a0]/10 rounded-lg px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-[#a8c5a0]/40 transition-colors resize-none" />
                 </div>
                 <motion.button onClick={handleContactSubmit} disabled={contactStatus === "loading"}
