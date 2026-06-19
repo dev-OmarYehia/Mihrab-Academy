@@ -19,12 +19,12 @@ export default function HijriCalendarArticle() {
       </nav>
 
       <section className="pt-20 relative h-[50vh] overflow-hidden">
-        <img src="/blog/hijri-calendar.jpg" alt="The Hijri Calendar" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-white" />
-        <div className="absolute bottom-8 left-10 md:left-20">
-          <span className="bg-[#1a3a2f]/90 text-[#c9a96e] text-[10px] uppercase tracking-widest px-3 py-1 rounded-full border border-[#c9a96e]/20">Hadith &amp; Seerah</span>
-        </div>
-      </section>
+  <img src="/hijj.jpeg" alt="The Hijri Calendar" className="w-full h-full object-cover" />
+  <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-white" />
+  <div className="absolute bottom-8 left-10 md:left-20">
+    <span className="bg-[#1a3a2f]/90 text-[#c9a96e] text-[10px] uppercase tracking-widest px-3 py-1 rounded-full border border-[#c9a96e]/20">Hadith &amp; Seerah</span>
+  </div>
+</section>
 
       <section className="bg-white px-10 md:px-20 py-16">
         <div className="max-w-3xl mx-auto">
@@ -71,7 +71,7 @@ export default function HijriCalendarArticle() {
                     { name: "Hajj (Pilgrimage)", desc: "Performed in Dhu al-Hijjah" },
                   ].map((item) => (
                     <li key={item.name} className="flex items-start gap-3">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" strokeWidth="2" className="mt-0.5 shrink-0"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" strokeWidth="2" className="mt-0.5 shrink-0"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
                       <span><strong className="text-gray-900">{item.name}</strong> — {item.desc}</span>
                     </li>
                   ))}

@@ -6,21 +6,6 @@ import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
-const submitContactForm = async (body: {
-  fullName: string; email: string; phone: string; message: string;
-}) => {
-  const res = await fetch(`${API}/api/contact`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Failed to send");
-  return data;
-};
-
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
@@ -29,9 +14,9 @@ const fadeUp: Variants = {
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } };
 
 const blogPosts = [
-  { category: "ISLAMIC-SHARIA", title: "Eid al-Adha: Meaning, Rituals & Lessons", excerpt: "A Celebration of Faith, Sacrifice, and Gratitude. Every year, Muslims around the world come together to...", img: "https://images.unsplash.com/photo-1608501078713-8e445a709b39?w=600&auto=format&fit=crop" },
-  { category: "HADITH", title: "Understanding Prophetic Wisdom", excerpt: "Delve into the profound wisdom of the Hadith and discover practical guidance for contemporary living.", img: "https://images.unsplash.com/photo-1585036156171-384164a8c675?w=600&auto=format&fit=crop" },
-  { category: "PARENTING", title: "Nurturing Young Hearts", excerpt: "Learn effective parenting techniques grounded in Islamic principles to raise compassionate and knowledgeable children.", img: "https://images.unsplash.com/photo-1511895426328-dc8714191011?w=600&auto=format&fit=crop" },
+  { category: "QURAN", title: "How to Memorize Quran Fast & Easily", excerpt: "The Quran is the word of Allah and memorizing it is one of the greatest blessings a Muslim can achieve. With the right method, anyone can memorize it step by step.", img: "/blog/quran.png", href: "/blog/how-to-memorize-quran" },
+  { category: "ISLAMIC HISTORY", title: "Islamic History: A Journey of Faith, Civilization & Achievement", excerpt: "Islamic history is one of the most remarkable and influential histories in the world — a story of faith, leadership, and civilization that changed humanity forever.", img: "/blog/islamic-history.png", href: "/blog/islamic-history" },
+  { category: "HADITH & SEERAH", title: "The Hijri Calendar: The Sacred Journey and Temporal Anchor of Islam", excerpt: "For over a billion Muslims, time is measured not just by cycles of the sun, but by a profound historical turning point that altered the course of human history.", img: "/blog/hijri-calendar.jpg", href: "/blog/hijri-calendar" },
 ];
 
 export default function Home() {
@@ -62,14 +47,23 @@ export default function Home() {
   };
 
   // Contact form
-  const [contact, setContact] = useState({ fullName: "", email: "", phone: "", message: "" });
+  const [contact, setContact] = useState({ fullName: "", email: "", phone: "", message: "", programs: [] as string[] });
   const [contactStatus, setContactStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [contactError, setContactError] = useState("");
+
+  const toggleProgram = (program: string) => {
+    setContact((prev) => ({
+      ...prev,
+      programs: prev.programs.includes(program)
+        ? prev.programs.filter((p) => p !== program)
+        : [...prev.programs, program],
+    }));
+  };
 
   const handleContactChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setContact((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleContactSubmit = async () => {
+  const handleContactSubmit = () => {
     if (!contact.fullName || !contact.email || !contact.message) {
       setContactStatus("error");
       setContactError("Please fill in your name, email, and message.");
@@ -77,14 +71,20 @@ export default function Home() {
     }
     setContactStatus("loading");
     setContactError("");
-    try {
-      await submitContactForm(contact);
-      setContactStatus("success");
-      setContact({ fullName: "", email: "", phone: "", message: "" });
-    } catch (err: unknown) {
-      setContactStatus("error");
-      setContactError(err instanceof Error ? err.message : "Failed to send. Please try again.");
-    }
+
+    const text =
+      `Hi, I'd like to get in touch with Mihrab Academy.\n\n` +
+      `*Name:* ${contact.fullName}\n` +
+      `*Email:* ${contact.email}\n` +
+      (contact.phone ? `*Phone:* ${contact.phone}\n` : "") +
+      (contact.programs.length > 0 ? `*Programs:* ${contact.programs.join(", ")}\n` : "") +
+      `*Message:* ${contact.message}`;
+
+    const url = `https://wa.me/201553135708?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank");
+
+    setContactStatus("success");
+    setContact({ fullName: "", email: "", phone: "", message: "", programs: [] });
   };
 
   const goToBooking = () => router.push(user ? "/booking" : "/signup");
@@ -143,15 +143,15 @@ export default function Home() {
                 className="flex items-center gap-2 bg-[#5a4a2f] text-[#c9a96e] border border-[#c9a96e]/20 px-6 py-3 rounded-full text-sm">
                 Explore Courses <span>→</span>
               </motion.button>
-              <motion.button whileHover={{ color: "#a8c5a0" }} onClick={() => window.open("https://wa.me/201553135708?text=Hi%2C%20I%27d%20like%20to%20book%20a%20free%20trial%20lesson!", "_blank")} className="text-white/70 text-sm px-6 py-3">
-                Start Learning
+              <motion.button whileHover={{ color: "#a8c5a0" }} onClick={goToBooking} className="text-white/70 text-sm px-6 py-3">
+                
               </motion.button>
             </motion.div>
           </motion.div>
           <motion.div initial={{ opacity: 0, scale: 0.92, x: 40 }} animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }} className="flex-1 max-w-lg w-full">
             <div className="rounded-3xl overflow-hidden aspect-[1/1] ring-1 ring-[#a8c5a0]/20">
-              <img src="/interface.jpeg" />
+              <img src="/interface.jpeg" alt="Student reading Quran" className="w-full h-full object-cover" />
             </div>
           </motion.div>
         </motion.div>
@@ -163,7 +163,7 @@ export default function Home() {
           <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.9 }} className="flex-1 max-w-lg w-full">
             <div className="rounded-2xl overflow-hidden aspect-[4/3] ring-1 ring-[#a8c5a0]/15">
               <motion.img whileHover={{ scale: 1.04 }} transition={{ duration: 0.6 }}
-                src="vision.jpeg" className="w-full h-full object-cover" />
+                src="/vision.jpeg" alt="Grand mosque" className="w-full h-full object-cover" />
             </div>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.2 }} className="flex-1 max-w-xl">
@@ -249,13 +249,14 @@ export default function Home() {
       </section>
 
       {/* ── Contact ── */}
-      <section className="bg-[#0f1a14] px-10 md:px-20 py-24">
+      <section className="bg-[#0d1510] px-10 md:px-20 py-24">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          className="max-w-5xl mx-auto flex flex-col md:flex-row rounded-3xl overflow-hidden border border-[#a8c5a0]/15">
+          className="max-w-5xl mx-auto flex flex-col md:flex-row rounded-3xl overflow-hidden border border-gray-200 shadow-sm">
+          {/* Left — white panel */}
           <div className="bg-[#1a3a2f] p-10 md:w-2/5 flex flex-col justify-between">
             <div>
-              <h2 className="text-4xl font-light text-white mb-4">Get in Touch</h2>
-              <p className="text-[#a8c5a0]/60 text-sm leading-relaxed mb-10">Have questions? Our admissions team will guide you.</p>
+              <h2 className="text-4xl font-light text-gray-900 mb-4">Get in Touch</h2>
+              <p className="text-gray-500 text-sm leading-relaxed mb-10">Have questions? Our admissions team will guide you.</p>
             </div>
             <div className="space-y-6">
               {[
@@ -267,20 +268,22 @@ export default function Home() {
                   whileHover={{ x: 4 }} className="flex items-start gap-4 cursor-pointer group">
                   <span className="text-[#c9a96e] text-lg mt-0.5">{item.icon}</span>
                   <div>
-                    <p className="text-[#a8c5a0]/40 text-xs uppercase tracking-widest">{item.label}</p>
-                    <p className="text-[#c9a96e] text-sm font-medium group-hover:underline">{item.value}</p>
+                    <p className="text-gray-400 text-xs uppercase tracking-widest">{item.label}</p>
+                    <p className="text-[#8a7340] text-sm font-medium group-hover:underline">{item.value}</p>
                   </div>
                 </motion.a>
               ))}
             </div>
           </div>
+
+          {/* Right — dark panel */}
           <div className="bg-[#0d1a12] p-10 flex-1 space-y-5">
             {contactStatus === "success" ? (
               <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
                 className="h-full flex flex-col items-center justify-center text-center py-16">
                 <div className="text-6xl mb-5">✅</div>
-                <h3 className="text-white text-2xl font-light mb-2">Message Sent!</h3>
-                <p className="text-[#a8c5a0]/60 text-sm max-w-xs">Jazakum Allah Khayran. We&apos;ll get back to you within 24 hours.</p>
+                <h3 className="text-white text-2xl font-light mb-2">Opening WhatsApp...</h3>
+                <p className="text-[#a8c5a0]/60 text-sm max-w-xs">Jazakum Allah Khayran. Continue the conversation on WhatsApp to finish sending your message.</p>
                 <button onClick={() => setContactStatus("idle")} className="mt-8 text-[#c9a96e] text-sm hover:underline">Send another message</button>
               </motion.div>
             ) : (
@@ -293,8 +296,8 @@ export default function Home() {
                 )}
                 <div className="grid grid-cols-2 gap-4">
                   {[
-                    { label: "Full Name", name: "fullName", placeholder: "Omar Yehia", type: "text" },
-                    { label: "Email Address", name: "email", placeholder: "omar@example.com", type: "email" },
+                    { label: "Full Name", name: "fullName", placeholder: "Hamza Mohamed", type: "text" },
+                    { label: "Email Address", name: "email", placeholder: "Hamza@example.com", type: "email" },
                   ].map((field) => (
                     <div key={field.name}>
                       <label className="block text-[#a8c5a0]/70 text-xs mb-2">{field.label} <span className="text-red-400">*</span></label>
@@ -306,8 +309,39 @@ export default function Home() {
                 </div>
                 <div>
                   <label className="block text-[#a8c5a0]/70 text-xs mb-2">Phone Number</label>
-                  <input name="phone" type="text" placeholder="+20 15 53135708" value={contact.phone} onChange={handleContactChange}
+                  <input name="phone" type="text" placeholder="+17759865200" value={contact.phone} onChange={handleContactChange}
                     className="w-full bg-[#152a20] border border-[#a8c5a0]/10 rounded-lg px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-[#a8c5a0]/40 transition-colors" />
+                </div>
+                <div>
+                  <label className="block text-[#a8c5a0]/70 text-xs mb-2">Programs you&apos;re interested in</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {["Quran Program", "Arabic Language", "Islamic Studies", "History Program"].map((program) => {
+                      const selected = contact.programs.includes(program);
+                      return (
+                        <button
+                          key={program}
+                          type="button"
+                          onClick={() => toggleProgram(program)}
+                          className={`flex items-center gap-2 px-4 py-3 rounded-lg text-sm border transition-colors text-left ${
+                            selected
+                              ? "bg-[#1a3a2f] border-[#c9a96e]/50 text-[#c9a96e]"
+                              : "bg-[#152a20] border-[#a8c5a0]/10 text-white/70 hover:border-[#a8c5a0]/30"
+                          }`}
+                        >
+                          <span className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${
+                            selected ? "bg-[#c9a96e] border-[#c9a96e]" : "border-[#a8c5a0]/30"
+                          }`}>
+                            {selected && (
+                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#152a20" strokeWidth="3">
+                                <polyline points="20 6 9 17 4 12" />
+                              </svg>
+                            )}
+                          </span>
+                          {program}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
                 <div>
                   <label className="block text-[#a8c5a0]/70 text-xs mb-2">Message <span className="text-red-400">*</span></label>
@@ -317,7 +351,7 @@ export default function Home() {
                 <motion.button onClick={handleContactSubmit} disabled={contactStatus === "loading"}
                   whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                   className="w-full bg-[#1a3a2f] border border-[#a8c5a0]/20 text-white py-3.5 rounded-lg text-sm font-medium hover:border-[#a8c5a0]/50 transition-colors disabled:opacity-50">
-                  {contactStatus === "loading" ? "Sending..." : "Send Message"}
+                  {contactStatus === "loading" ? "Opening WhatsApp..." : "Send Message"}
                 </motion.button>
               </>
             )}
@@ -340,34 +374,23 @@ export default function Home() {
           <div>
             <h4 className="text-[#a8c5a0]/40 uppercase tracking-widest text-xs mb-6">Quick Links</h4>
             <ul className="space-y-4">
-              {[["About Us", "/about"], ["Our Programs", "#"], ["Book a Lesson", "/booking"], ["Blog", "#"]].map(([label, href]) => (
+              {[["About Us", "/about"], ["Our Programs", "#"], ["Book a Lesson", "/booking"], ["Blog", "/blog"]].map(([label, href]) => (
                 <li key={label}><Link href={href} className="text-[#a8c5a0]/70 text-sm hover:text-[#c9a96e] transition-colors">{label}</Link></li>
               ))}
             </ul>
           </div>
-          <div>
-            <h4 className="text-[#a8c5a0]/40 uppercase tracking-widest text-xs mb-6">Account</h4>
-            <ul className="space-y-4">
-              {user ? (
-                <>
-                  <li><Link href="/booking" className="text-[#a8c5a0]/70 text-sm hover:text-[#c9a96e] transition-colors">My Lessons</Link></li>
-                  <li><button onClick={logout} className="text-[#a8c5a0]/70 text-sm hover:text-[#c9a96e] transition-colors">Logout</button></li>
-                </>
-              ) : (
-                <>
-                  <li><Link href="/signup" className="text-[#a8c5a0]/70 text-sm hover:text-[#c9a96e] transition-colors">Sign Up</Link></li>
-                </>
-              )}
-            </ul>
-          </div>
+
         </div>
-        <div className="border-t border-[#a8c5a0]/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-[#a8c5a0]/30 text-xs">© 2026 Mihrab Academy. All rights reserved.</p>
+        <div className="border-t border-[#c9a96e]/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-white/20 text-xs">© 2026 Mihrab Academy. All rights reserved.</p>
           <div className="flex gap-5">
-            {[{ icon: "f", href: "https://facebook.com" }, { icon: "𝕏", href: "https://x.com" }, { icon: "📷", href: "https://instagram.com" }, { icon: "▶", href: "https://youtube.com" }].map(({ icon, href }, i) => (
-              <motion.a key={i} href={href} target="_blank" rel="noopener noreferrer"
-                whileHover={{ y: -3, color: "#c9a96e" }} className="text-[#a8c5a0]/40 text-sm transition-colors">
-                {icon}
+            {[{ icon: "facebook", href: "https://facebook.com" }, { icon: "twitter", href: "https://x.com" }, { icon: "instagram", href: "https://instagram.com" }, { icon: "youtube", href: "https://youtube.com" }].map(({ icon, href }) => (
+              <motion.a key={icon} href={href} target="_blank" rel="noopener noreferrer"
+                whileHover={{ y: -3, color: "#c9a96e" }} className="text-white/30 text-sm transition-colors">
+                {icon === "facebook" && <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>}
+                {icon === "twitter" && <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>}
+                {icon === "instagram" && <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>}
+                {icon === "youtube" && <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/></svg>}
               </motion.a>
             ))}
           </div>

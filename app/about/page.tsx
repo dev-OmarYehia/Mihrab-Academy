@@ -148,7 +148,6 @@ export default function AboutPage() {
             </>
           ) : (
             <>
-              <Link href="/login" className="text-white/60 text-sm hover:text-white transition-colors">Sign In</Link>
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
                 onClick={() => router.push("/signup")}
                 className="bg-[#5a4a2f] hover:bg-[#6b5a3a] text-[#c9a96e] text-sm px-5 py-2 rounded-full border border-[#c9a96e]/20 transition-colors">
