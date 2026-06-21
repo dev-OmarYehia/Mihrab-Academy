@@ -37,7 +37,7 @@ export default function QuranProgram() {
         </div>
         <div className="flex items-center gap-3">
           {user ? <Link href="/booking" className="text-[#c9a96e] text-sm border border-[#c9a96e]/20 px-4 py-2 rounded-full hover:bg-[#5a4a2f] transition-colors">My Lessons</Link>
-          : <><Link href="/login" className="text-white/60 text-sm hover:text-white transition-colors">Sign In</Link>
+          : <><Link href="/login" className="text-white/60 text-sm hover:text-white transition-colors"></Link>
             <button onClick={()=>router.push("/signup")} className="bg-[#5a4a2f] hover:bg-[#6b5a3a] text-[#c9a96e] text-sm px-5 py-2 rounded-full border border-[#c9a96e]/20 transition-colors">Start Learning</button></>}
         </div>
       </nav>
@@ -114,11 +114,23 @@ export default function QuranProgram() {
         <h2 className="text-4xl md:text-5xl font-light text-white mb-4">Ready to Begin Your <span className="text-[#c9a96e] italic">Quran Program</span> Journey?</h2>
         <p className="text-white/40 text-base max-w-lg mx-auto mb-10">Book a free trial session and meet your teacher before committing. No pressure, no payment required.</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button onClick={() => window.open("https://wa.me/201553135708?text=Hi%2C%20I%27d%20like%20to%20book%20a%20free%20trial%20lesson!", "_blank")}
-            className="flex items-center justify-center gap-2 bg-[#1a3a2f] border border-[#c9a96e]/30 hover:border-[#c9a96e]/60 text-white px-8 py-4 rounded-full text-sm font-medium transition-colors">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-            Book a Free Trial
-          </button>
+        <button
+  onClick={() => router.push("/signup")}
+  className="flex items-center justify-center gap-2 bg-[#1a3a2f] border border-[#c9a96e]/30 hover:border-[#c9a96e]/60 text-white px-8 py-4 rounded-full text-sm font-medium transition-colors"
+>
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
+    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+    <circle cx="9" cy="7" r="4" />
+  </svg>
+  Book a Free Trial
+</button>
           <Link href="/#programs" className="flex items-center justify-center gap-2 border border-white/20 hover:border-white/40 text-white px-8 py-4 rounded-full text-sm font-medium transition-colors">
             View All Programs →
           </Link>
