@@ -117,7 +117,7 @@ export default function Home() {
             </>
           ) : (
             <>
-              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }} onClick={goToBooking}
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }} onClick={() => { trackLead(); router.push("/signup"); }}
                 className="bg-[#5a4a2f] hover:bg-[#6b5a3a] text-[#c9a96e] text-sm px-5 py-2 rounded-full border border-[#c9a96e]/20 transition-colors">
                 Start Learning
               </motion.button>
@@ -464,7 +464,7 @@ function FreeTrialPopup({ onBook }: { onBook: () => void }) {
           <button onClick={() => { onBook(); setVisible(false); }}
             className="flex-1 flex items-center justify-center gap-2 bg-[#1a3a2f] border border-[#c9a96e]/20 hover:border-[#c9a96e]/50 text-white text-sm py-2.5 rounded-xl font-medium transition-colors">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-            Message Us
+            Message Us  
           </button>
         </div>
       </div>
