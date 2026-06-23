@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { trackLeadAndOpenWhatsApp } from "@/lib/fbPixel";
 
 export default function HijriCalendarArticle() {
   return (
@@ -12,7 +13,7 @@ export default function HijriCalendarArticle() {
             <Link key={l} href={h} className="hover:text-[#c9a96e] transition-colors">{l}</Link>
           ))}
         </div>
-        <button onClick={() => window.open("https://wa.me/201553135708?text=Hi%2C%20I%27d%20like%20to%20book%20a%20free%20trial%20lesson!", "_blank")}
+        <button onClick={() => trackLeadAndOpenWhatsApp("Hi, I'd like to book a free trial lesson!")}
           className="bg-[#5a4a2f] hover:bg-[#6b5a3a] text-[#c9a96e] text-sm px-5 py-2 rounded-full border border-[#c9a96e]/20 transition-colors">
           Start Learning
         </button>

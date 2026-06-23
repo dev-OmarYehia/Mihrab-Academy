@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
+import { trackLeadAndOpenWhatsApp } from "@/lib/fbPixel";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
