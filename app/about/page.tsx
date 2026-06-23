@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
-import { trackLeadAndOpenWhatsApp } from "@/lib/fbPixel";
+import { trackLead } from "@/lib/fbPixel";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -150,7 +150,7 @@ export default function AboutPage() {
           ) : (
             <>
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
-                onClick={() => router.push("/signup")}
+                onClick={() => { trackLead(); router.push("/booking"); }}
                 className="bg-[#5a4a2f] hover:bg-[#6b5a3a] text-[#c9a96e] text-sm px-5 py-2 rounded-full border border-[#c9a96e]/20 transition-colors">
                 Start Learning
               </motion.button>

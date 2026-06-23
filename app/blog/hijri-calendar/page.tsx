@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { trackLeadAndOpenWhatsApp } from "@/lib/fbPixel";
+import { trackLead } from "@/lib/fbPixel";
 
 export default function HijriCalendarArticle() {
   return (

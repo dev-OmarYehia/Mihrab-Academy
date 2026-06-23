@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { trackLeadAndOpenWhatsApp } from "@/lib/fbPixel";
+import { trackLead } from "@/lib/fbPixel";
 
 import type { Variants } from "framer-motion";
 const fadeUp: Variants = {
@@ -116,7 +116,7 @@ export default function QuranProgram() {
         <p className="text-white/40 text-base max-w-lg mx-auto mb-10">Book a free trial session and meet your teacher before committing. No pressure, no payment required.</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <button
-  onClick={() => router.push("/signup")}
+  onClick={() => { trackLead(); router.push("/signup"); }}
   className="flex items-center justify-center gap-2 bg-[#1a3a2f] border border-[#c9a96e]/30 hover:border-[#c9a96e]/60 text-white px-8 py-4 rounded-full text-sm font-medium transition-colors"
 >
   <svg
