@@ -1,19 +1,40 @@
 "use client";
+
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { trackLead } from "@/lib/fbPixel";
 
 export default function HijriCalendarArticle() {
+  const router = useRouter();
+
   return (
     <div className="font-serif bg-white text-gray-900 min-h-screen">
       <nav className="flex items-center justify-between px-10 py-5 fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
-        <Link href="/" className="text-[#c9a96e] font-bold tracking-widest text-sm uppercase">Mihrab Academy</Link>
+        <Link href="/" className="text-[#c9a96e] font-bold tracking-widest text-sm uppercase">
+          Mihrab Academy
+        </Link>
+
         <div className="hidden md:flex gap-8 text-sm text-gray-600">
-          {[["Home", "/"], ["Courses", "/#programs"], ["About Us", "/about"], ["Blog", "/blog"]].map(([l, h]) => (
-            <Link key={l} href={h} className="hover:text-[#c9a96e] transition-colors">{l}</Link>
+          {[
+            ["Home", "/"],
+            ["Courses", "/#programs"],
+            ["About Us", "/about"],
+            ["Blog", "/blog"],
+          ].map(([l, h]) => (
+            <Link key={l} href={h} className="hover:text-[#c9a96e] transition-colors">
+              {l}
+            </Link>
           ))}
         </div>
-        <button onClick={() => trackLeadAndOpenWhatsApp("Hi, I'd like to book a free trial lesson!")}
-          className="bg-[#5a4a2f] hover:bg-[#6b5a3a] text-[#c9a96e] text-sm px-5 py-2 rounded-full border border-[#c9a96e]/20 transition-colors">
+
+        <button
+          onClick={() => {
+            trackLead();
+            router.push("/signup");
+          }}
+          className="bg-[#5a4a2f] hover:bg-[#6b5a3a] text-[#c9a96e] text-sm px-5 py-2 rounded-full border border-[#c9a96e]/20 transition-colors"
+        >
           Start Learning
         </button>
       </nav>
@@ -86,8 +107,7 @@ export default function HijriCalendarArticle() {
             </div>
           </motion.div>
 
-          <div className="mt-16 bg-[#1a3a2f]/8 border border-[#c9a96e]/20 rounded-2xl p-8 text-center">
-            <p className="text-[#c9a96e] uppercase tracking-widest text-xs mb-3">Learn More</p>
+          <div className="mt-16 bg-[#1a3a2f]/[0.08] border border-[#c9a96e]/20 rounded-2xl p-8 text-center">            <p className="text-[#c9a96e] uppercase tracking-widest text-xs mb-3">Learn More</p>
             <h3 className="text-2xl font-light text-gray-900 mb-3">Explore Islamic History with Us</h3>
             <p className="text-gray-500 text-sm mb-6">Book a free trial lesson and deepen your knowledge of Islamic history and civilization.</p>
             <button onClick={() => window.open("https://wa.me/201553135708?text=Hi%2C%20I%27d%20like%20to%20book%20a%20free%20trial%20lesson!", "_blank")}

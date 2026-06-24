@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { trackLead } from "@/lib/fbPixel";
 
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } };
 const fadeUp: Variants = {
@@ -65,7 +66,7 @@ export default function BlogPage() {
         </div>
         <div className="flex items-center gap-3">
           <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
-            onClick={() => trackLeadAndOpenWhatsApp("Hi, I'd like to book a free trial lesson!")}
+            onClick={() => router.push("/signup")}
             className="bg-[#5a4a2f] hover:bg-[#6b5a3a] text-[#c9a96e] text-sm px-5 py-2 rounded-full border border-[#c9a96e]/20 transition-colors">
             Start Learning
           </motion.button>
