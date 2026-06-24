@@ -384,7 +384,7 @@ export default function Home() {
         <div className="border-t border-[#c9a96e]/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white/20 text-xs">© 2026 Mihrab Academy. All rights reserved.</p>
           <div className="flex gap-5">
-            {[{ icon: "facebook", href: "https://facebook.com" }, { icon: "twitter", href: "https://x.com" }, { icon: "instagram", href: "https://instagram.com" }, { icon: "youtube", href: "https://youtube.com" }].map(({ icon, href }) => (
+            {[{ icon: "facebook", href: "https://www.facebook.com/share/1EJ47zkcpc/" }, { icon: "twitter", href: "https://x.com" }, { icon: "instagram", href: "https://www.instagram.com/mihrab_academy1?utm_source=qr&igsh=MTlycWJueDZiMzBmZA==" }, { icon: "youtube", href: "https://youtube.com" }].map(({ icon, href }) => (
               <motion.a key={icon} href={href} target="_blank" rel="noopener noreferrer"
                 whileHover={{ y: -3, color: "#c9a96e" }} className="text-white/30 text-sm transition-colors">
                 {icon === "facebook" && <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>}
