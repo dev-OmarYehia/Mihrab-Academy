@@ -88,6 +88,19 @@ export default function Home() {
 
   const goToBooking = () => router.push(user ? "/booking" : "/signup");
 
+  // Safe analytics helper. Do not let missing Meta Pixel / gtag fail production builds.
+  const trackLead = () => {
+    if (typeof window === "undefined") return;
+
+    const analyticsWindow = window as typeof window & {
+      fbq?: (...args: unknown[]) => void;
+      gtag?: (...args: unknown[]) => void;
+    };
+
+    analyticsWindow.fbq?.("track", "Lead");
+    analyticsWindow.gtag?.("event", "generate_lead");
+  };
+
   return (
     <div className="font-serif bg-[#0f1a14] text-white min-h-screen overflow-x-hidden">
 
@@ -200,7 +213,7 @@ export default function Home() {
             <motion.div key={p.title} variants={fadeUp}
               whileHover={{ y: -4, borderColor: "rgba(201,169,110,0.25)" }}
               onClick={() => router.push(p.href)}
-              className="bg-[#152a20]/40 border border-white/8 rounded-2xl p-6 transition-all duration-300 group cursor-pointer flex flex-col">
+              className="bg-[#152a20]/40 border border-white/[0.08] rounded-2xl p-6 transition-all duration-300 group cursor-pointer flex flex-col">
               {/* Top row: icon + number */}
               <div className="flex items-start justify-between mb-6">
                 <div className="w-9 h-9 rounded-lg bg-[#c9a96e]/10 flex items-center justify-center text-[#c9a96e]">
@@ -301,7 +314,7 @@ export default function Home() {
                     <div key={field.name}>
                       <label className="block text-[#a8c5a0]/70 text-xs mb-2">{field.label} <span className="text-red-400">*</span></label>
                       <input name={field.name} type={field.type} placeholder={field.placeholder}
-                        value={contact[field.name as keyof typeof contact]} onChange={handleContactChange}
+                        value={contact[field.name as "fullName" | "email"]} onChange={handleContactChange}
                         className="w-full bg-[#152a20] border border-[#a8c5a0]/10 rounded-lg px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-[#a8c5a0]/40 transition-colors" />
                     </div>
                   ))}
@@ -469,4 +482,4 @@ function FreeTrialPopup({ onBook }: { onBook: () => void }) {
       </div>
     </motion.div>
   );
-}
+} 
