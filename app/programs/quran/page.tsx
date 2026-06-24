@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { trackLead } from "@/lib/fbPixel";
 
 import type { Variants } from "framer-motion";
 const fadeUp: Variants = {

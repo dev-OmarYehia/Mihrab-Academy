@@ -1,7 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { trackLead } from "@/lib/fbPixel";
 
 export default function HijriCalendarArticle() {
   return (
